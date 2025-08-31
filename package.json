@@ -1,0 +1,30 @@
+{
+  "name": "task-manager-app",
+  "version": "1.0.0",
+  "description": "MERN Stack Task Manager by Subhankar Das",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -n \"API,WEB\" -c \"bgBlue.bold,bgMagenta.bold\" -p \"[{name}]\" \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm run dev",
+    "install-server": "cd backend && npm install",
+    "install-client": "cd frontend && npm install",
+    "install-all": "npm run install-server && npm run install-client",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "clean": "rm -rf node_modules && rm -rf frontend/node_modules && rm -rf backend/node_modules"
+  },
+  "keywords": [
+    "mern",
+    "react",
+    "nodejs",
+    "express",
+    "mongodb",
+    "task-manager"
+  ],
+  "author": "Subhankar Das <subhankarnew1@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
