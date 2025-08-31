@@ -8,9 +8,9 @@
     "dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "Subhankar Das",
+  "license": "MIT",
+  "description": "Backend for MERN Task Manager",
   "type": "module",
   "dependencies": {
     "bcryptjs": "^3.0.2",
