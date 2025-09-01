@@ -29,19 +29,6 @@ connection.once('open', () => {
 app.use('/api/users', usersRouter);
 app.use('/api/tasks', tasksRouter);
 
-// Serve static files in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
-  // FIXED: Named wildcard parameter
-  app.get('/*splat', (req, res) => {
-    if (!req.path.startsWith('/api')) {
-      res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
-    } else {
-      res.status(404).json({ message: 'API route not found' });
-    }
-  });
-}
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
