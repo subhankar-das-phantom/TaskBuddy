@@ -91,7 +91,7 @@ const TaskList = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-        '${API_BASE_URL}/api/tasks/add',
+        `${API_BASE_URL}/api/tasks/add`,
         { description: description.trim() },
         { headers: { 'x-auth-token': token } }
       );
