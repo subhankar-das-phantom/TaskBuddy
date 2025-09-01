@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import API_BASE_URL from '../config/api';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -52,7 +53,7 @@ const Login = () => {
     setError('');
     
     try {
-      const res = await axios.post('http://localhost:5000/api/users/login', {
+      const res = await axios.post(`${API_BASE_URL}/api/users/login`, {
         username: username.trim(),
         password
       });

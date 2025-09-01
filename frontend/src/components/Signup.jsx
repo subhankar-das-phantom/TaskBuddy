@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EyeIcon, EyeSlashIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import API_BASE_URL from '../config/api';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -80,7 +81,7 @@ const Signup = () => {
     setError('');
     
     try {
-      const res = await axios.post('http://localhost:5000/api/users/signup', {
+      const res = await axios.post(`${API_BASE_URL}/api/users/signup`, {
         username,
         email,
         password

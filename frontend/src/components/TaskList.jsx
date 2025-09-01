@@ -3,6 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
+import API_BASE_URL from '../config/api';
 import { 
   PlusIcon, 
   CheckIcon, 
@@ -47,7 +48,7 @@ const TaskList = () => {
           }
         }
 
-        const res = await axios.get('http://localhost:5000/api/tasks', {
+        const res = await axios.get(`${API_BASE_URL}/api/tasks`, {
           headers: { 'x-auth-token': token },
         });
 
@@ -90,7 +91,7 @@ const TaskList = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:5000/api/tasks/add',
+        '${API_BASE_URL}/api/tasks/add',
         { description: description.trim() },
         { headers: { 'x-auth-token': token } }
       );
@@ -115,7 +116,7 @@ const TaskList = () => {
   const deleteTask = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
+      const res = await axios.delete(`${API_BASE_URL}/api/tasks/${id}`, {
         headers: { 'x-auth-token': token },
       });
 
@@ -136,7 +137,7 @@ const TaskList = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.patch(
-        `http://localhost:5000/api/tasks/${id}/toggle`,
+        `${API_BASE_URL}/api/tasks/${id}/toggle`,
         {},
         { headers: { 'x-auth-token': token } }
       );
@@ -183,7 +184,7 @@ const TaskList = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.put(
-        `http://localhost:5000/api/tasks/${id}`,
+        `${API_BASE_URL}/api/tasks/${id}`,
         { description: newDescription.trim() },
         { headers: { 'x-auth-token': token } }
       );
