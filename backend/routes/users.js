@@ -7,8 +7,15 @@ const router = express.Router();
 
 // Signup
 router.route('/signup').post(async (req, res) => {
+  console.log('--- SIGNUP REQUEST ---');
   try {
+    console.log('Request Body:', req.body);
     const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+      console.log('Validation failed: Missing fields');
+      return res.status(400).json({ success: false, message: 'Please provide username, email, and password' });
+    }
 
     console.log('Signup attempt:', { username, email, passwordLength: password.length });
 
@@ -25,6 +32,8 @@ router.route('/signup').post(async (req, res) => {
       });
     }
 
+    console.log('User does not exist. Proceeding with hashing password.');
+
     // Hash password - CRITICAL STEP
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -36,31 +45,38 @@ router.route('/signup').post(async (req, res) => {
     const newUser = new User({
       username,
       email,
-      password: hashedPassword, // Make sure this is the hashed version
+      password: hashedPassword,
     });
 
     const savedUser = await newUser.save();
-    console.log('User saved successfully:', savedUser.username);
+    console.log('User saved successfully:', savedUser);
     
     res.status(201).json({
       success: true,
       message: 'User created successfully',
-      user: { username, email } // Don't return password
+      user: { username: savedUser.username, email: savedUser.email }
     });
 
   } catch (err) {
-    console.error('Signup error:', err);
+    console.error('--- SIGNUP ERROR ---', err);
     res.status(500).json({ 
       success: false,
-      message: 'Server error' 
+      message: 'Server error during signup' 
     });
   }
 });
 
 // Login
 router.route('/login').post(async (req, res) => {
+  console.log('--- LOGIN REQUEST ---');
   try {
+    console.log('Request Body:', req.body);
     const { username, password } = req.body;
+
+    if (!username || !password) {
+      console.log('Validation failed: Missing fields');
+      return res.status(400).json({ success: false, message: 'Please provide username and password' });
+    }
 
     console.log('Login attempt:', { username, passwordLength: password.length });
 
@@ -70,19 +86,19 @@ router.route('/login').post(async (req, res) => {
     });
 
     if (!user) {
-      console.log('User not found:', username);
+      console.log('User not found for username/email:', username);
       return res.status(400).json({ 
         success: false,
-        message: 'Invalid credentials' 
+        message: 'Invalid credentials'
       });
     }
 
-    console.log('User found:', user.username);
-    console.log('Stored password length:', user.password.length);
+    console.log('User found:', user);
 
     // Compare password with hash
+    console.log('Comparing passwords...');
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('Password match:', isMatch);
+    console.log('Password match result:', isMatch);
 
     if (!isMatch) {
       console.log('Password mismatch for user:', user.username);
@@ -91,6 +107,8 @@ router.route('/login').post(async (req, res) => {
         message: 'Invalid credentials' 
       });
     }
+
+    console.log('Password matched. Generating JWT.');
 
     // Generate JWT
     const token = jwt.sign(
@@ -111,10 +129,10 @@ router.route('/login').post(async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Login error:', err);
+    console.error('--- LOGIN ERROR ---', err);
     res.status(500).json({ 
       success: false,
-      message: 'Server error' 
+      message: 'Server error during login' 
     });
   }
 }); 
